@@ -23,9 +23,22 @@ pipeline{
                """
             }
         }
+        stage('plan') {
+            steps{
+                sh"""
+                    cd 01-vpc
+                    tarraform plan 
+                    
+                """
+            }
+        }
         stage('apply') {
             steps{
-                echo "this is testing for apply"
+                 input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                
+            }
             }
         }
         

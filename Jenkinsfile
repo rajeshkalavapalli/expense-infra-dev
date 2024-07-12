@@ -16,7 +16,9 @@ pipeline{
         }
         stage('plan') {
             steps{
-               echo "this is testing for plan"
+               sh"""
+               ls -la
+               """
             }
         }
         stage('apply') {

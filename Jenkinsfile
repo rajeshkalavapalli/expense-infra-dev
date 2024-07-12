@@ -18,7 +18,6 @@ pipeline{
         stage('init') {
             steps{
                sh"""
-                ls -ltr
                 cd 01-vpc
                 terraform init -reconfigure           
                """
@@ -34,6 +33,7 @@ pipeline{
     post{
         always{
             echo "when pipline useing "
+            deleteDir()
         }
          success{
             echo "when pipeline sucess"

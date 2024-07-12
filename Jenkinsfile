@@ -33,12 +33,16 @@ pipeline{
             }
         }
         stage('apply') {
-            steps{
-                 input {
+             input {
                 message "Should we continue?"
                 ok "Yes, we should."
-                
             }
+            steps{
+                sh"""
+                    cd 01-vpc
+                    tarraform apply -auto-approve
+                    
+                """
             }
         }
         

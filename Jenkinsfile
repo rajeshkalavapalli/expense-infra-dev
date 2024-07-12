@@ -7,17 +7,19 @@ pipeline{
         disableConcurrentBuilds()
     }
     stages{
-        stage('init') {
+        stage('list') {
             steps{
                 sh """
                 ls -ltr
                 """
             }
         }
-        stage('plan') {
+        stage('init') {
             steps{
                sh"""
-               ls -la
+                cd 01-vpc
+                terraform init -reconfigure
+                
                """
             }
         }

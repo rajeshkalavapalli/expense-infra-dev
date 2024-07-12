@@ -16,12 +16,12 @@ pipeline{
         }
         stage('plan') {
             steps{
-               
+               echo "this is testing for plan"
             }
         }
         stage('apply') {
             steps{
-                
+                echo " this is testing for apply"
             }
         }
         

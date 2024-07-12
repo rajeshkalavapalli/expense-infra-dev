@@ -21,7 +21,7 @@ pipeline{
         }
         stage('apply') {
             steps{
-                echo " this is testing for apply"
+                echo "this is testing for apply"
             }
         }
         

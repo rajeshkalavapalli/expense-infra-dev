@@ -7,6 +7,9 @@ pipeline{
         disableConcurrentBuilds()
         ansiColor('xterm')
     }
+    parameters{
+        choice(name: 'action', choices: ['apply', 'destroy', ], description: 'apply or destriy to view the changes')
+    }
     stages{
         stage('list') {
             steps{
@@ -19,8 +22,7 @@ pipeline{
             steps{
                sh"""
                 cd 01-vpc
-                terraform init -upgrade      
-                     
+                terraform init -upgrade                           
                """
             }
         }

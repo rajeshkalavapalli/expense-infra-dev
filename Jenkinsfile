@@ -8,7 +8,7 @@ pipeline{
         ansiColor('xterm')
     }
     stages{
-        stage('list') {
+        stage('listing') {
             steps{
                 sh """
                 ls -ltr

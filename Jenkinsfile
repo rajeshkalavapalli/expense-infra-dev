@@ -8,7 +8,7 @@ pipeline{
         ansiColor('xterm')
     }
     stages{
-        stage('listing') {
+        stage('list') {
             steps{
                 sh """
                 ls -ltr
@@ -19,7 +19,7 @@ pipeline{
             steps{
                sh"""
                 cd 01-vpc
-                terraform init -upgrade           
+                terraform init -reconfigure           
                """
             }
         }

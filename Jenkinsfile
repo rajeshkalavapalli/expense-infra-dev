@@ -27,6 +27,11 @@ pipeline{
             }
         }
         stage('plan') {
+            when{
+                expression{
+                    params.action == 'apply'
+                }
+            }
             steps{
                 sh"""
                 cd 01-vpc
@@ -48,6 +53,20 @@ pipeline{
             }
         }
         
+         stage('destroy') {
+             when{
+                expression{
+                    params.action == 'destroy'
+                }
+            }
+            steps{
+                sh"""
+                    cd 01-vpc
+                    tarraform destroy -auto-approve
+                    
+                """
+            }
+        }
     }
     post{
         always{

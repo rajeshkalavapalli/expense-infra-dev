@@ -31,6 +31,17 @@ module "frontend" {
 
 }
 
+module "web_alb" {
+  source = "../../expense-terraform-sg"
+  project_name = var.project_name
+  sg_description = "sg for web alb "
+  environment = var.environment
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+  common_tags = var.common_tags
+  sg_name = "web-alb"
+
+}
+
 module "bastion" {
   source = "../../expense-terraform-sg"
   project_name = var.project_name
@@ -107,6 +118,15 @@ resource "aws_security_group_rule" "backend_app_alb" {
   security_group_id = module.backend.Sg_id # what we creating 
 } 
 
+#backend is accepting connection from frontend
+resource "aws_security_group_rule" "app_alb_frontend" {  
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  source_security_group_id = module.frontend.Sg_id # from where it accepting 
+  security_group_id = module.app_alb.Sg_id # what we creating 
+} 
 
 #backend is accepting connection from app_alb 
 resource "aws_security_group_rule" "app_alb_vpn" {  
@@ -158,8 +178,26 @@ resource "aws_security_group_rule" "frontend_public" {
   protocol          = "tcp" 
   cidr_blocks = ["0.0.0.0/0"]
   security_group_id = module.frontend.Sg_id # what we creating 
-} 
+}
 
+#backend is accepting connection from pubic 
+resource "aws_security_group_rule" "web_alb_public" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp" 
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = module.web_alb.Sg_id # what we creating 
+} 
+#backend is accepting connection from pubic 
+resource "aws_security_group_rule" "web_alb_public_https" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp" 
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = module.web_alb.Sg_id # what we creating 
+} 
 #backend is accepting connection from bastion
 resource "aws_security_group_rule" "frontend_bastion" {
   type              = "ingress"

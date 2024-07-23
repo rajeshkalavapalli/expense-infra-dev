@@ -221,6 +221,16 @@ resource "aws_security_group_rule" "bastion_public" {
 } 
 
 
+#part of jenkins cicd
+resource "aws_security_group_rule" "backend_default_vpc" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp" 
+  cidr_blocks = ["172.31.0.0/16"]
+  security_group_id = module.backend.Sg_id # what we creating 
+} 
+
 #web accepting connection from public
 resource "aws_security_group_rule" "web_public" {
   type              = "ingress"
